@@ -1,15 +1,13 @@
 import { FC } from 'react'
+import { Link } from 'react-router-dom'
 import { Button, TextField, Typography } from '@mui/material'
 
-import './style.scss'
-import { Link } from 'react-router-dom'
-
 interface ILogin {
-	setEmail: (email: string) => void
-	setPassword: (password: string) => void
+	setEmail: (value: string) => void
+	setPassword: (value: string) => void
 }
 
-export const Login: FC<ILogin> = ({ setEmail, setPassword }) => {
+export const Login: FC<ILogin> = ({ setEmail, setPassword }): JSX.Element => {
 	return (
 		<>
 			<Typography variant='h2' textAlign='center'>
@@ -24,7 +22,7 @@ export const Login: FC<ILogin> = ({ setEmail, setPassword }) => {
 				label='Email'
 				variant='outlined'
 				placeholder='Введите Email'
-				onChange={event => setEmail(event.target.value)}
+				onChange={event => setEmail(event.target.value.trim())}
 			/>
 			<TextField
 				fullWidth={true}
@@ -33,7 +31,7 @@ export const Login: FC<ILogin> = ({ setEmail, setPassword }) => {
 				variant='outlined'
 				type='password'
 				placeholder='Введите пароль'
-				onChange={event => setPassword(event.target.value)}
+				onChange={event => setPassword(event.target.value.trim())}
 			/>
 			<Button
 				variant='contained'

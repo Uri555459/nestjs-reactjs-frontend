@@ -1,22 +1,32 @@
 import { Box } from '@mui/material'
 import { FC, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { instance } from '../../../utils/axios'
 
 import { Login } from '../Login/Login'
 import { Register } from '../Register/Register'
 
 import './style.scss'
 
-interface IAuthRootComponent {}
-
-export const AuthRootComponent: FC<IAuthRootComponent> = () => {
+export const AuthRootComponent: FC = (): JSX.Element => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [repeatPassword, setRepeatPassword] = useState('')
+	const [username, setUsername] = useState('')
+	const [firstName, setFirstName] = useState('')
 	const location = useLocation()
 
 	const submitHandler = async (event: { preventDefault: () => void }) => {
 		event.preventDefault()
-		return { email, password }
+
+		if (location.pathname === '/login') {
+			const userData = { email, password }
+			const user = await instance.post('/auth/login', userData)
+		} else {
+			if (password !== repeatPassword) return alert('Пароли не совпадают')
+			const userData = { firstName, username, password, email }
+			const newUser = await instance.post('/auth/register', userData)
+		}
 	}
 
 	return (
@@ -36,7 +46,13 @@ export const AuthRootComponent: FC<IAuthRootComponent> = () => {
 					{location.pathname === '/login' ? (
 						<Login setEmail={setEmail} setPassword={setPassword} />
 					) : location.pathname === '/register' ? (
-						<Register />
+						<Register
+							setEmail={setEmail}
+							setFirstName={setFirstName}
+							setPassword={setPassword}
+							setRepeatPassword={setRepeatPassword}
+							setUsername={setUsername}
+						/>
 					) : null}
 				</Box>
 			</form>
