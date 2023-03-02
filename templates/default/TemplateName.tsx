@@ -1,9 +1,9 @@
 import { FC } from 'react'
 
-import styles from './TemplateName.module.scss'
+import './style.scss'
 
-interface TemplateNameProps {}
+interface ITemplateName {}
 
-export const TemplateName: FC<TemplateNameProps> = () => {
-	return <div className={styles.templateName}>TemplateName Component</div>
+export const TemplateName: FC<ITemplateName> = () => {
+	return <div>TemplateName Component</div>
 }
