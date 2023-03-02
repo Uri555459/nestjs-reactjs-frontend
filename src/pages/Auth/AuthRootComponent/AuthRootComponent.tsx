@@ -1,10 +1,13 @@
-import { Box } from '@mui/material'
 import { FC, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { instance } from '../../../utils/axios'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Box } from '@mui/material'
 
-import { Login } from '../Login/Login'
-import { Register } from '../Register/Register'
+import { instance } from '../../../utils/axios'
+import { useAppDispatch } from '../../../utils/hooks'
+import { login } from '../../../store/slices/auth'
+
+import { Login } from '../'
+import { Register } from '../'
 
 import './style.scss'
 
@@ -15,17 +18,29 @@ export const AuthRootComponent: FC = (): JSX.Element => {
 	const [username, setUsername] = useState('')
 	const [firstName, setFirstName] = useState('')
 	const location = useLocation()
+	const dispatch = useAppDispatch()
+	const navigate = useNavigate()
 
 	const submitHandler = async (event: { preventDefault: () => void }) => {
 		event.preventDefault()
 
 		if (location.pathname === '/login') {
-			const userData = { email, password }
-			const user = await instance.post('/auth/login', userData)
+			try {
+				const userData = { email, password }
+				const user = await instance.post('/auth/login', userData)
+				await dispatch(login(user.data))
+				navigate('/')
+			} catch (error: any) {
+				return error.message
+			}
 		} else {
 			if (password !== repeatPassword) return alert('Пароли не совпадают')
-			const userData = { firstName, username, password, email }
-			const newUser = await instance.post('/auth/register', userData)
+			try {
+				const userData = { firstName, username, password, email }
+				const newUser = await instance.post('/auth/register', userData)
+			} catch (error: any) {
+				return error.message
+			}
 		}
 	}
 
