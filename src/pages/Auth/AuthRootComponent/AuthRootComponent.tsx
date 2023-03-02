@@ -32,15 +32,17 @@ export const AuthRootComponent: FC = (): JSX.Element => {
 				await dispatch(login(user.data))
 				navigate('/')
 			} catch (error: any) {
-				return error.message
+				return error
 			}
 		} else {
 			if (password !== repeatPassword) return alert(AppErrors.PasswordDoNoMatch)
 			try {
 				const userData = { firstName, username, password, email }
 				const newUser = await instance.post('/auth/register', userData)
+				await dispatch(login(newUser.data))
+				navigate('/')
 			} catch (error: any) {
-				return error.message
+				return error
 			}
 		}
 	}
