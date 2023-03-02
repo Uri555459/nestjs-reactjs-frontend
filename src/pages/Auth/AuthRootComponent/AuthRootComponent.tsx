@@ -10,6 +10,7 @@ import { Login } from '../'
 import { Register } from '../'
 
 import './style.scss'
+import { AppErrors } from '../../../common/errors'
 
 export const AuthRootComponent: FC = (): JSX.Element => {
 	const [email, setEmail] = useState('')
@@ -34,7 +35,7 @@ export const AuthRootComponent: FC = (): JSX.Element => {
 				return error.message
 			}
 		} else {
-			if (password !== repeatPassword) return alert('Пароли не совпадают')
+			if (password !== repeatPassword) return alert(AppErrors.PasswordDoNoMatch)
 			try {
 				const userData = { firstName, username, password, email }
 				const newUser = await instance.post('/auth/register', userData)
